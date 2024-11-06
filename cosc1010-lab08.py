@@ -1,19 +1,46 @@
-# Your Name Here
+# Andrew Deba
 # UWYO COSC 1010
-# Submission Date
-# Lab XX
-# Lab Section:
-# Sources, people worked with, help given to:
-# your
-# comments
-# here
-
+# 11/7/2024
+# Lab 08
+# Lab Section: 18
+# Sources, people worked with, help given to: https://stackoverflow.com/questions/736043/checking-if-a-string-can-be-converted-to-float-in-python, 
+# https://www.w3schools.com/python/ref_func_float.asp
 
 # Write a function that will properly check strings to see if they are an int or float, and convert them if so
 # If they can't be converted return false
 # Other wise return the converted int or float 
 # Floats should only have one decimal point in them 
 
+def convert(string):
+    if is_int(string) == True:
+        return int(string)
+    elif is_float(string) == True:
+        return float(string)
+    else:
+        return False
+def is_int_or_float(string):
+    for i in string:
+        if i.isnumeric():
+            continue
+        if i != ".":
+            return False
+    return True
+def is_int(string):
+    if is_int_or_float(string) == True:
+        for i in string:
+            if i == ".":
+                return False
+        return True
+def is_float(string):
+    if is_int_or_float(string) == True:
+        for i in string:
+            if i == ".":
+                return True
+        return False
+
+string = input("Enter a string:")
+final_val = convert(string)
+print(type(final_val))
 
 print("*" * 75)
 
@@ -37,6 +64,54 @@ print("*" * 75)
 # Exit on the word exit
 # Remember all inputs are strings, but the function needs ints or floats
 # Call your function and print the resulting list
+
+def calculate_y_value(x,m,b):
+    if if_negative(x) == False and if_negative(m) == False and if_negative(b) == False:
+        y = m*x + b
+    if if_negative(x) == True and if_negative(m) == False and if_negative(b) == False:
+        y = b - m*x
+    if if_negative(x) == False and if_negative(m) == True and if_negative(b) == False:
+        y = b - m*x
+    if if_negative(x) == False and if_negative(m) == False and if_negative(b) == True:
+        y = m*x - b
+    if if_negative(x) == True and if_negative(m) == False and if_negative(b) == True:
+        y = 0 - b - m*x
+    if if_negative(x) == False and if_negative(m) == True and if_negative(b) == True:
+        y = 0 - b - m*x
+    return y
+def if_negative_string(a):
+    if a[0] == "-":
+        return True
+    return False
+def possible_neg_value(a):
+    if if_negative_string(a) == True:
+        a = a.replace("-","")    
+    return a
+def if_negative(a):
+    if a < 0:
+        return True
+    return False
+
+
+m = convert(input("Enter a slope value:"))
+b= convert(input("Enter a y intercept value:"))
+x1 = convert(possible_neg_value(input("Enter a lower bound for the range of x:")))
+x2 = convert(possible_neg_value(input("Enter an upper bound for the range of x:")))
+
+all_values_of_y = []
+
+if 
+
+
+
+x = round(x1)
+print(x1)
+
+while x <= round(x2):
+    all_values_of_y.append(calculate_y_value(x,m,b))
+    x += 1
+
+print(all_values_of_y)
 
 print("*" * 75)
 
