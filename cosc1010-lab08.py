@@ -18,6 +18,7 @@ def convert(string):
         return float(string)
     else:
         return False
+
 def is_int_or_float(string):
     it_works = False
     for i in string:
@@ -30,12 +31,14 @@ def is_int_or_float(string):
         if i == ".":
             it_works = True
     return True
+
 def is_int(string):
     if is_int_or_float(string) == True:
         for i in string:
             if i == ".":
                 return False
         return True
+
 def is_float(string):
     if is_int_or_float(string) == True:
         for i in string:
@@ -43,8 +46,23 @@ def is_float(string):
                 return True
         return False
 
+def if_negative(a):
+    if a[0] == "-":
+        return True
+    return False
+
+def possible_neg_value(a):
+    if if_negative(a) == True:
+        a = a.replace("-","")    
+    return a
+
+def convert_negative(a):
+    return (a*-1)
+
 string = input("Enter a string:")
-final_val = convert(string)
+final_val = convert(possible_neg_value(string))
+if if_negative(string):
+    final_val = convert_negative(final_val)
 print(type(final_val))
 
 print("*" * 75)
@@ -78,24 +96,6 @@ def calculate_y_value(x,m,b,og_b,og_m):
     y = m*x + b
     return y
 
-def if_negative_int(a):
-    if a < 0:
-        a = a*-1
-        return a
-
-def if_negative(a):
-    if a[0] == "-":
-        return True
-    return False
-
-def possible_neg_value(a):
-    if if_negative(a) == True:
-        a = a.replace("-","")    
-    return a
-
-def convert_negative(a):
-    return (a*-1)
-
 def yesno():
     if input("Would you like to enter another equation?").upper() == "YES":
         return True
@@ -111,11 +111,11 @@ while True:
     og_x2 = input("Enter an upper bound for the range of x:")
     x2 = convert(possible_neg_value(og_x2))
 
-    if if_negative(og_x1) == True:
+    if if_negative(og_x1):
         x = convert_negative(round(x1))
     else:
         x = round(x1)
-    if if_negative(og_x2) == True:
+    if if_negative(og_x2):
         x2 = convert_negative(round(x2))
     else:
         x2 = round(x2)
@@ -145,18 +145,16 @@ print("*" * 75)
 # Create a second function that just does the square root operation 
     # If the number you are trying to take the square root of is negative, return null
 
-import math
-
 def square_root_of(a,b,c):
     b2 = b**2
     part2 = 4*a*c
     preFinal = b2 - part2
     if preFinal >= 0:
-        final = math.sqrt(preFinal)
+        final = preFinal**(.5)
         return final
     return False
 
-def caclulate_quadratic_equations_upper(a,b,c):
+def caclulate_quadratic_equations(a,b,c):
     x = 1
     final = []
     while x <= 2:
@@ -188,9 +186,10 @@ while True:
     if if_negative(og_c) == True:
         c = convert_negative(c)
 
-    if caclulate_quadratic_equations_upper(a,b,c) == False:
+    if caclulate_quadratic_equations(a,b,c) == False:
         print("The values of x produced by the quadratic formula are non-existant")
-    print(f"The values of x produced by the quadratic formula are {caclulate_quadratic_equations_upper(a,b,c)}")
+    else:
+        print(f"The values of x produced by the quadratic formula are {caclulate_quadratic_equations(a,b,c)}")
     if yesno() == True:
         continue
     break
