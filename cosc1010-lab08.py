@@ -4,7 +4,7 @@
 # Lab 08
 # Lab Section: 18
 # Sources, people worked with, help given to: https://stackoverflow.com/questions/736043/checking-if-a-string-can-be-converted-to-float-in-python, 
-# https://www.w3schools.com/python/ref_func_float.asp
+# https://www.w3schools.com/python/ref_func_float.asp, https://www.w3schools.com/python/ref_math_sqrt.asp
 
 # Write a function that will properly check strings to see if they are an int or float, and convert them if so
 # If they can't be converted return false
@@ -19,11 +19,16 @@ def convert(string):
     else:
         return False
 def is_int_or_float(string):
+    it_works = False
     for i in string:
         if i.isnumeric():
             continue
         if i != ".":
             return False
+        if i == "." and it_works == True:
+            return False
+        if i == ".":
+            it_works = True
     return True
 def is_int(string):
     if is_int_or_float(string) == True:
@@ -65,53 +70,69 @@ print("*" * 75)
 # Remember all inputs are strings, but the function needs ints or floats
 # Call your function and print the resulting list
 
-def calculate_y_value(x,m,b):
-    if if_negative(x) == False and if_negative(m) == False and if_negative(b) == False:
-        y = m*x + b
-    if if_negative(x) == True and if_negative(m) == False and if_negative(b) == False:
-        y = b - m*x
-    if if_negative(x) == False and if_negative(m) == True and if_negative(b) == False:
-        y = b - m*x
-    if if_negative(x) == False and if_negative(m) == False and if_negative(b) == True:
-        y = m*x - b
-    if if_negative(x) == True and if_negative(m) == False and if_negative(b) == True:
-        y = 0 - b - m*x
-    if if_negative(x) == False and if_negative(m) == True and if_negative(b) == True:
-        y = 0 - b - m*x
+def calculate_y_value(x,m,b,og_b,og_m):
+    if if_negative(og_b):
+        b = convert_negative(b)
+    if if_negative(og_m):
+        m = convert_negative(m)
+    y = m*x + b
     return y
-def if_negative_string(a):
+
+def if_negative_int(a):
+    if a < 0:
+        a = a*-1
+        return a
+
+def if_negative(a):
     if a[0] == "-":
         return True
     return False
+
 def possible_neg_value(a):
-    if if_negative_string(a) == True:
+    if if_negative(a) == True:
         a = a.replace("-","")    
     return a
-def if_negative(a):
-    if a < 0:
+
+def convert_negative(a):
+    return (a*-1)
+
+def yesno():
+    if input("Would you like to enter another equation?").upper() == "YES":
         return True
     return False
 
+while True:
+    og_m = input("Enter a slope value:")
+    m = convert(possible_neg_value(og_m))
+    og_b = input("Enter a y intercept value:")
+    b= convert(possible_neg_value(og_b))
+    og_x1 = input("Enter a lower bound for the range of x:")
+    x1 = convert(possible_neg_value(og_x1))
+    og_x2 = input("Enter an upper bound for the range of x:")
+    x2 = convert(possible_neg_value(og_x2))
 
-m = convert(input("Enter a slope value:"))
-b= convert(input("Enter a y intercept value:"))
-x1 = convert(possible_neg_value(input("Enter a lower bound for the range of x:")))
-x2 = convert(possible_neg_value(input("Enter an upper bound for the range of x:")))
+    if if_negative(og_x1) == True:
+        x = convert_negative(round(x1))
+    else:
+        x = round(x1)
+    if if_negative(og_x2) == True:
+        x2 = convert_negative(round(x2))
+    else:
+        x2 = round(x2)
+    if x > x2:
+        print("The lower bound of x must be less than the upper bound of x.")
+        continue
 
-all_values_of_y = []
+    all_values_of_y = []
 
-if 
+    while x <= x2:
+        all_values_of_y.append(calculate_y_value(x,m,b,og_b,og_m))
+        x += 1
 
-
-
-x = round(x1)
-print(x1)
-
-while x <= round(x2):
-    all_values_of_y.append(calculate_y_value(x,m,b))
-    x += 1
-
-print(all_values_of_y)
+    print(f"all possible values of y for your y=mx+b formula are {all_values_of_y}")
+    if yesno() == True:
+        continue
+    break
 
 print("*" * 75)
 
@@ -123,3 +144,53 @@ print("*" * 75)
 # Create a loop like above to prompt the user for input for the three values
 # Create a second function that just does the square root operation 
     # If the number you are trying to take the square root of is negative, return null
+
+import math
+
+def square_root_of(a,b,c):
+    b2 = b**2
+    part2 = 4*a*c
+    preFinal = b2 - part2
+    if preFinal >= 0:
+        final = math.sqrt(preFinal)
+        return final
+    return False
+
+def caclulate_quadratic_equations_upper(a,b,c):
+    x = 1
+    final = []
+    while x <= 2:
+        if square_root_of(a,b,c) == False:
+            return False
+        neg_b = convert_negative(b)
+        denom = 2*a
+        if x == 1:
+            numor = neg_b - square_root_of(a,b,c)
+        if x == 2:
+            numor = neg_b + square_root_of(a,b,c)
+        final.append(numor/denom)
+        x += 1
+    return final
+
+while True:
+    og_a = input("Please enter a value for 'a' in the quadratic equation:")
+    a = convert(possible_neg_value(og_a))
+    if if_negative(og_a) == True:
+        a = convert_negative(a)
+
+    og_b = input("Please enter a value for 'b' in the quadratic equation:")
+    b = convert(possible_neg_value(og_b))
+    if if_negative(og_b) == True:
+        b = convert_negative(b)
+
+    og_c = input("Please enter a value for 'c' in the quadratic equation:")
+    c = convert(possible_neg_value(og_c))
+    if if_negative(og_c) == True:
+        c = convert_negative(c)
+
+    if caclulate_quadratic_equations_upper(a,b,c) == False:
+        print("The values of x produced by the quadratic formula are non-existant")
+    print(f"The values of x produced by the quadratic formula are {caclulate_quadratic_equations_upper(a,b,c)}")
+    if yesno() == True:
+        continue
+    break
